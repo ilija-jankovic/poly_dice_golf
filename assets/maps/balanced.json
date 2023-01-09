@@ -1,0 +1,36 @@
+{
+    "terrain": [
+        {
+            "type": "rough",
+            "length": 40
+        },
+        {
+            "type": "fairway",
+            "length": 30
+        },
+        {
+            "type": "water",
+            "length": 20
+        },
+        {
+            "type": "fairway",
+            "length": 25
+        },
+        {
+            "type": "hole",
+            "length": 4
+        },
+        {
+            "type": "fairway",
+            "length": 11
+        },
+        {
+            "type": "bunker",
+            "length": 10
+        },
+        {
+            "type": "fairway",
+            "length": 10
+        }
+    ]
+}
