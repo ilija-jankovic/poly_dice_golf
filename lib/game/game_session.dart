@@ -80,6 +80,6 @@ class GameSession {
     _controller!.moveBall(_currentPlayerBall, offset);
 
     // Player 1 goes to 2 and vice versa.
-    _player = (_player! + 1) % 2 + 1;
+    _player = _player! % 2 + 1;
   }
 }
