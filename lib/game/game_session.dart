@@ -71,7 +71,7 @@ class GameSession {
     }
 
     if (dice.length > maxDice) {
-      throw Exception('Cannot have more than ${dice.length} in hand.');
+      throw Exception('Cannot have more than $maxDice in hand.');
     }
 
     final result = dice.map((die) => die.roll()).toList().sum;

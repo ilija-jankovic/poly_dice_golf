@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:poly_dice_golf/game/ball.dart';
 import 'package:poly_dice_golf/game/terrain.dart';
 import 'package:poly_dice_golf/models/terrain_model.dart';
@@ -10,13 +12,7 @@ class WaterTerrain extends Terrain {
 
   @override
   void manipulateBall(Ball ball) {
-    final diff = ball.position - position;
-
-    // Checks for a difference to avoid an infinite loop between ball.move() and
-    // manipulateBall().
-    if (diff > 0) {
-      ball.move(diff);
-    }
+    ball.position = max(0, position - 1);
   }
 
   @override
