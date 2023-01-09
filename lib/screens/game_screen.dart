@@ -56,12 +56,25 @@ class _GameScreenState extends State<GameScreen> {
 
   Widget _createThrowButton() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      ThrowButton(onPressed: () {
+      ThrowButton(onPressed: () async {
         if (_dice.isNotEmpty) {
           widget.session.strokeBall(_dice, _direction);
           setState(() {
             _dice.clear();
           });
+
+          if (widget.session.isPreviousPlayerWinner) {
+            final winner = widget.session.player % 2 + 1;
+            await showDialog(
+                context: context,
+                builder: ((context) => AlertDialog(
+                      title: Text('Player $winner wins!'),
+                    )));
+            setState(() {
+              // Start new game.
+              widget.session.start('balanced');
+            });
+          }
         }
       })
     ]);

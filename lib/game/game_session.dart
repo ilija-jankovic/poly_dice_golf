@@ -6,6 +6,7 @@ import 'package:poly_dice_golf/game/golf_track.dart';
 /// Needed for .sum in strokeBall().
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'package:poly_dice_golf/models/terrain_model.dart';
 
 enum StrokeDirection { left, right }
 
@@ -31,6 +32,15 @@ class GameSession {
     }
 
     return _balls!;
+  }
+
+  int get player {
+    if (!_hasStarted) {
+      throw Exception(
+          'Game must be started before the current player can be retrieved.');
+    }
+
+    return _player!;
   }
 
   Ball getBall(int player) {
@@ -81,5 +91,17 @@ class GameSession {
 
     // Player 1 goes to 2 and vice versa.
     _player = _player! % 2 + 1;
+  }
+
+  bool get isPreviousPlayerWinner {
+    if (!_hasStarted) {
+      throw Exception(
+          'Game must be started before winner boolean is retrieved.');
+    }
+
+    return _controller!.track
+            .getTerrainAtPosition(getBall(_player! % 2 + 1).position)
+            .type ==
+        TerrainType.hole;
   }
 }
