@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:poly_dice_golf/game/die.dart';
 import 'package:poly_dice_golf/game/game_session.dart';
 import 'package:poly_dice_golf/widgets/die_adder_button.dart';
+import 'package:poly_dice_golf/widgets/direction.dart';
 import 'package:poly_dice_golf/widgets/golf_display.dart';
 import 'package:poly_dice_golf/widgets/hand_display.dart';
 import 'package:poly_dice_golf/widgets/throw_button.dart';
@@ -19,6 +20,7 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   final List<Die> _dice = [];
+  StrokeDirection _direction = StrokeDirection.right;
 
   Widget _createDisplay() {
     return AspectRatio(
@@ -55,17 +57,42 @@ class _GameScreenState extends State<GameScreen> {
   Widget _createThrowButton() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       ThrowButton(onPressed: () {
-        widget.session.strokeBall(_dice, StrokeDirection.right);
-        setState(() {
-          _dice.clear();
-        });
+        if (_dice.isNotEmpty) {
+          widget.session.strokeBall(_dice, _direction);
+          setState(() {
+            _dice.clear();
+          });
+        }
       })
     ]);
   }
 
+  void _setDirection(StrokeDirection direction) {
+    setState(() {
+      _direction = direction;
+    });
+  }
+
+  Widget _createArrows() {
+    return Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Direction(
+            active: _direction == StrokeDirection.left,
+            direction: StrokeDirection.left,
+            onPressed: _setDirection,
+          ),
+          Direction(
+            active: _direction == StrokeDirection.right,
+            direction: StrokeDirection.right,
+            onPressed: _setDirection,
+          )
+        ]));
+  }
+
   Widget _createHandDisplay() {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 100.0),
+        padding: const EdgeInsets.only(bottom: 50.0),
         child: HandDisplay(
             dice: _dice,
             onDieRemoved: (die) {
@@ -83,6 +110,7 @@ class _GameScreenState extends State<GameScreen> {
       _createDisplay(),
       _createAdderButtons(),
       _createThrowButton(),
+      _createArrows(),
       const Spacer(),
       _createHandDisplay()
     ]));
